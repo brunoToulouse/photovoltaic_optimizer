@@ -417,10 +417,6 @@ def main():
     from equipment_loader import load_equipment_from_config
     equipments = tuple(load_equipment_from_config())
 
-    # The first equipment is considered the water heater for legacy compatibility
-    equipment_water_heater = equipments[0] if equipments else None
-    equipment_water_heater = TempDrivenVariablePowerEquipment(0,'water_heater', 2400,45,50,55,60)
-    
     # At startup, reset everything
     for e in equipments:
         e.set_current_power(0)
