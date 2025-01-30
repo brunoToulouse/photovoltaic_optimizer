@@ -1,0 +1,24 @@
+---
+# Equipment Configuration File
+
+equipment:
+  - type: VariablePow
+    name: "Water_Heater"
+    max_power: 2000
+    min_energy: 500
+    period: 3600
+
+  - type: TempDrivenVariablePowerEquipment
+    name: "Heat_Pump"
+    max_power: 3000
+    temp_min: 19
+    temp_eco: 20
+    temp_sol_min: 21
+    temp_max: 23
+
+  - type: ConstantPowerEquipment
+    name: "Pool_Pump"
+    nominal_power: 1000
+
+  - type: UnknownPowerEquipment
+    name: "Misc_Device"

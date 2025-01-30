@@ -1,2 +1,0 @@
-This is a tool to calibrate the power regulator based on real power measurement values.
-It will output a CSV table with the command (in percent ranging from 0 to 100) and the actual measured power.

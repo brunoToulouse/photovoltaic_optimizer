@@ -1,0 +1,12 @@
+---
+# Equipment Configuration File
+
+equipment:
+  - type: TempDrivenVariablePowerEquipment
+    id: 0
+    name: "water_heater"
+    max_power: 2400
+    temp_min: 45
+    temp_eco: 50
+    temp_sol_min: 55
+    temp_max: 60
