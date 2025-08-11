@@ -25,10 +25,9 @@ import paho.mqtt.client as mqtt
 import logging
 import time
 from datetime import datetime
-
-import requests
 import serial
 from influxdb import InfluxDBClient
+import config
 
 
 def on_connect(client, userdata, flags, rc):
@@ -46,8 +45,9 @@ logging.basicConfig(filename='/home/bruno/teleinfo-releve.log', level=logging.IN
 logging.info("Teleinfo starting..")
 
 # connexion a la base de données InfluxDB
-client = InfluxDBClient('localhost', 8086)
-DB_NAME = "teleinfo"
+client = InfluxDBClient(config.INFLUXDB_HOST, config.INFLUXDB_PORT, 
+                       config.INFLUXDB_USERNAME, config.INFLUXDB_PASSWORD)
+DB_NAME = config.INFLUXDB_DATABASE
 connected = False
 while not connected:
     try:
@@ -68,10 +68,9 @@ while not connected:
 #connection au broker mqtt
 try:
   mqtt_client=mqtt.Client()
-  mqtt_client.username_pw_set("bruno", "bruno")
+  mqtt_client.username_pw_set(config.MQTT_USERNAME, config.MQTT_PASSWORD)
   mqtt_client.on_connect = on_connect
-  #mqtt_client.on_message = on_message
-  mqtt_client.connect("localhost", 1883, 120)
+  mqtt_client.connect(config.MQTT_BROKER_HOST, config.MQTT_BROKER_PORT, config.MQTT_KEEPALIVE)
 except:
   logging.info('PB connecting to MQTT Server.')
 
