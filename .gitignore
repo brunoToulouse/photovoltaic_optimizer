@@ -1,1 +1,4 @@
+venv
+start_power_regulation.sh
+start_teleinfo.sh
 __pycache__
