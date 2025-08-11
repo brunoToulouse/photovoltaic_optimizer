@@ -21,6 +21,7 @@ The system monitors power production and consumption, dynamically allocating pow
 ├── equipment_loader.py
 ├── equipment.py
 ├── power_regulation.py
+├── teleinfo.py
 ├── README_equipment_config.md
 └── README.md
 ```
@@ -32,6 +33,7 @@ The system monitors power production and consumption, dynamically allocating pow
 - `equipment_loader.py`: Loads equipment configurations from YAML
 - `config.py`: Configuration settings for MQTT and InfluxDB
 - `equipment_config.yml`: YAML configuration for equipment
+- `teleinfo.py`: Teleinfo data reader for French smart meters (Linky)
 
 ## Usage Instructions
 
@@ -43,30 +45,104 @@ The system monitors power production and consumption, dynamically allocating pow
 
 ### Installation
 
+#### Automated Installation (Linux/Raspberry Pi)
+
 1. Clone the repository:
-   ```
+   ```bash
    git clone <repository_url>
    cd <repository_directory>
    ```
 
-2. Install required Python packages:
-   ```
-   pip install paho-mqtt influxdb pytz pyyaml
+2. Run the installation script:
+   ```bash
+   chmod +x install.sh
+   ./install.sh
    ```
 
-3. Configure MQTT and InfluxDB settings in `config.py` or set corresponding environment variables.
+The script will:
+- Install and configure Mosquitto MQTT broker
+- Install and configure InfluxDB
+- Install and configure Grafana
+- Create Python virtual environment
+- Install required Python packages
+- Create systemd services for automatic startup
+- Generate startup scripts
 
-4. Set up your equipment in `equipment_config.yml`.
+#### Manual Installation
+
+1. Install system dependencies:
+   ```bash
+   sudo apt update
+   sudo apt install -y mosquitto mosquitto-clients influxdb grafana
+   ```
+
+2. Install Python packages:
+   ```bash
+   pip install paho-mqtt influxdb pytz pyyaml pyserial
+   ```
+
+3. Configure services and copy equipment template:
+   ```bash
+   cp equipment_config.yml.template equipment_config.yml
+   ```
 
 ### Running the System
 
-Execute the main regulation script:
+#### Using Systemd Services (Recommended)
 
+After installation, services are automatically started:
+
+```bash
+# Check service status
+sudo systemctl status power_regulation
+sudo systemctl status teleinfo
+
+# Control services
+sudo systemctl start/stop/restart power_regulation
+sudo systemctl start/stop/restart teleinfo
 ```
+
+#### Manual Execution
+
+Execute scripts directly:
+
+```bash
+# Main regulation script
 python power_regulation.py
+
+# Teleinfo data collection
+python teleinfo.py
 ```
 
-### Configuration
+#### Using Startup Scripts
+
+```bash
+# Start power regulation
+./start_power_regulation.sh
+
+# Start teleinfo
+./start_teleinfo.sh
+```
+
+### Post-Installation Configuration
+
+#### Security Setup
+
+1. Configure MQTT authentication:
+   ```bash
+   sudo mosquitto_passwd -c /etc/mosquitto/passwd <username>
+   ```
+
+2. Edit MQTT configuration:
+   ```bash
+   sudo nano /etc/mosquitto/mosquitto.conf
+   ```
+
+3. Access Grafana dashboard:
+   - URL: http://localhost:3000
+   - Default login: admin/admin
+
+#### Application Settings
 
 #### MQTT Settings
 
@@ -120,6 +196,16 @@ equipment:
    - Check equipment configuration in `equipment_config.yml`
    - Verify MQTT topics for equipment control
 
+4. Teleinfo Connection Issues:
+   - Ensure serial port `/dev/ttyAMA0` is accessible
+   - Check Linky meter TIC output connection
+   - Verify serial port permissions
+
+5. Service Issues:
+   - Check service logs: `sudo journalctl -u power_regulation -f`
+   - Check service logs: `sudo journalctl -u teleinfo -f`
+   - Restart services: `sudo systemctl restart power_regulation teleinfo`
+
 For detailed logging, modify the log level in `debug.py`:
 
 ```python
@@ -145,10 +231,10 @@ The power regulation system operates as follows:
 5. Power and energy data are stored in InfluxDB for monitoring and analysis.
 
 ```
-[MQTT Broker] <-> [power_regulation.py] <-> [InfluxDB]
-       ^                    |
-       |                    v
-[Equipment Control]    [Equipment Classes]
+[Linky Meter] -> [teleinfo.py] -> [MQTT Broker] <-> [power_regulation.py] <-> [InfluxDB]
+                                        ^                    |
+                                        |                    v
+                                 [Equipment Control]    [Equipment Classes]
 ```
 
 ## Infrastructure
@@ -159,3 +245,39 @@ This project primarily consists of Python scripts and does not have a dedicated 
 - InfluxDB: Time-series database for storing power and energy data
 
 Ensure these services are properly set up and configured in your environment.
+
+## Teleinfo Module
+
+The `teleinfo.py` module reads data from French Linky smart meters via the TIC (Télé-Information Client) interface.
+
+### Features
+
+- Reads teleinfo frames from serial port (`/dev/ttyAMA0`)
+- Validates data integrity using checksums
+- Publishes power measurements to MQTT topics:
+  - `tic/SINSTI`: Injected power
+  - `tic/SINSTS`: Consumed power  
+  - `tic/ERQT`: Total reactive power
+- Stores all measurements in InfluxDB
+
+### Hardware Requirements
+
+- Raspberry Pi or compatible device
+- TIC interface connection to Linky meter
+- Serial port access (`/dev/ttyAMA0`)
+
+### Configuration
+
+The teleinfo module uses the same configuration as the main system from `config.py`:
+
+- MQTT broker settings
+- InfluxDB connection parameters
+- Logging configuration
+
+### Running Teleinfo
+
+```bash
+python teleinfo.py
+```
+
+Logs are written to `/home/bruno/teleinfo-releve.log`.
