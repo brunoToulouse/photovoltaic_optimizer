@@ -127,7 +127,7 @@ def main():
    with serial.Serial(port='/dev/ttyAMA0', baudrate=9600, parity=serial.PARITY_EVEN, stopbits=serial.STOPBITS_ONE,
                        bytesize=serial.SEVENBITS, timeout=1) as ser:
       try:
-        logging.info("Teleinfo is reading on /dev/ttyS0..")
+        logging.info("Teleinfo is reading on /dev/ttyAMA0..")
         # boucle pour partir sur un début de trame
         line = ser.readline()
         while b'\x02' not in line:  # recherche du caractère de début de trame
@@ -157,7 +157,10 @@ def main():
             #checksum = rest
             if verif_checksum(f"{key}\t{val}\t", checksum):
             # creation du champ pour la trame en cours avec cast des valeurs de mesure en "integer"
- 
+               ERQ1val=0
+               ERQ2val=0
+               ERQ3val=0
+               ERQ4val=0
                time_measure = time.time()
                # insertion dans influxdb
                add_measures(key, val, time_measure)
@@ -176,11 +179,12 @@ def main():
 
             else:
                logging.info("checksum invalid {} : {}".format(key,val))
+            line = ser.readline()
 
       except Exception as e:
             logging.error("Exception : %s" % e, exc_info=True)
             logging.error("%s %s" % (key, val))
-            line = ser.readline()
+     
  
 
 if __name__ == '__main__':
