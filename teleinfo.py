@@ -172,7 +172,7 @@ def main():
                    ERQ4val=int(val)
                if "ERQ" in key:
                    ERQ=ERQ1val+ERQ2val+ERQ3val+ERQ4val
-               add_measures("ERQT", ERQ, time_measure)
+                   add_measures("ERQT", ERQ, time_measure)
 
             else:
                logging.info("checksum invalid {} : {}".format(key,val))

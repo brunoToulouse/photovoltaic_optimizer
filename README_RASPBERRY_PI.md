@@ -96,10 +96,18 @@ dtoverlay=disable-bt
 ### Disable Serial Console
 ```bash
 sudo systemctl disable hciuart
+sudo systemctl disable bluetooth.service
 sudo nano /boot/cmdline.txt
 ```
 
 Remove `console=serial0,115200` from the line (keep everything else).
+### Serial port configuration
+
+add you user to dialout group
+
+```bash
+   sudo usermod -a -G dialout pi
+```
 
 ### Verify Serial Port
 ```bash
@@ -170,6 +178,7 @@ sudo nano /etc/mosquitto/mosquitto.conf
 
 Add:
 ```
+listener 1883
 allow_anonymous false
 password_file /etc/mosquitto/passwd
 ```

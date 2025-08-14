@@ -100,7 +100,7 @@ while not connected:
             print("Database %s created!" % INFLUXDB_DATABASE)
         client.switch_database(INFLUXDB_DATABASE)
         print("Connected to %s!" % INFLUXDB_DATABASE)
-    except requests.exceptions.ConnectionError:
+    except Exception:
         print('InfluxDB is not reachable. Waiting 5 seconds to retry.')
         time.sleep(5)
     else:
