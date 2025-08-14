@@ -23,6 +23,7 @@ The system monitors power production and consumption, dynamically allocating pow
 ├── power_regulation.py
 ├── teleinfo.py
 ├── README_equipment_config.md
+├── README_RASPBERRY_PI.md
 └── README.md
 ```
 
@@ -34,6 +35,7 @@ The system monitors power production and consumption, dynamically allocating pow
 - `config.py`: Configuration settings for MQTT and InfluxDB
 - `equipment_config.yml`: YAML configuration for equipment
 - `teleinfo.py`: Teleinfo data reader for French smart meters (Linky)
+- `README_RASPBERRY_PI.md`: Complete Raspberry Pi setup guide
 
 ## Usage Instructions
 
@@ -46,6 +48,8 @@ The system monitors power production and consumption, dynamically allocating pow
 ### Installation
 
 #### Automated Installation (Linux/Raspberry Pi)
+
+**For Raspberry Pi setup from scratch, see [README_RASPBERRY_PI.md](README_RASPBERRY_PI.md)**
 
 1. Clone the repository:
    ```bash
