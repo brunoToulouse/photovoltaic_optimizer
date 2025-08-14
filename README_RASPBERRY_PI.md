@@ -103,7 +103,7 @@ sudo nano /boot/cmdline.txt
 Remove `console=serial0,115200` from the line (keep everything else).
 ### Serial port configuration
 
-add you user to dialout group
+add you user 'pi' to dialout group
 
 ```bash
    sudo usermod -a -G dialout pi
