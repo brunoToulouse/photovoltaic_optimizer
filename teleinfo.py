@@ -157,10 +157,6 @@ def main():
             #checksum = rest
             if verif_checksum(f"{key}\t{val}\t", checksum):
             # creation du champ pour la trame en cours avec cast des valeurs de mesure en "integer"
-               ERQ1val=0
-               ERQ2val=0
-               ERQ3val=0
-               ERQ4val=0
                time_measure = time.time()
                # insertion dans influxdb
                add_measures(key, val, time_measure)
