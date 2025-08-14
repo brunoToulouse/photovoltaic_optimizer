@@ -179,15 +179,15 @@ Restart MQTT:
 sudo systemctl restart mosquitto
 ```
 
-### Restart All Services
-```bash
-sudo systemctl restart power_regulation teleinfo
-```
-
 ### Configure Application
 
 1. **Equipment Configuration**: See [README_equipment_config.md](README_equipment_config.md) for equipment setup
 2. **System Configuration**: See main [README.md](README.md) for config.py settings
+
+### Restart All Services
+```bash
+sudo systemctl restart power_regulation teleinfo
+```
 
 ### Access Services
 - **Grafana**: http://raspberry_pi_ip:3000 (admin/admin)
