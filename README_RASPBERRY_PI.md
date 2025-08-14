@@ -184,6 +184,11 @@ sudo systemctl restart mosquitto
 sudo systemctl restart power_regulation teleinfo
 ```
 
+### Configure Application
+
+1. **Equipment Configuration**: See [README_equipment_config.md](README_equipment_config.md) for equipment setup
+2. **System Configuration**: See main [README.md](README.md) for config.py settings
+
 ### Access Services
 - **Grafana**: http://raspberry_pi_ip:3000 (admin/admin)
 - **InfluxDB**: http://raspberry_pi_ip:8086
