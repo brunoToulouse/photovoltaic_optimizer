@@ -189,6 +189,41 @@ sudo systemctl restart mosquitto
 sudo systemctl restart power_regulation teleinfo
 ```
 
+### Configure Grafana Datasource
+
+Add InfluxDB datasource via API:
+```bash
+curl -X POST \
+  http://admin:admin@localhost:3000/api/datasources \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "name": "InfluxDB",
+    "type": "influxdb",
+    "url": "http://localhost:8086",
+    "access": "proxy",
+    "database": "teleinfo",
+    "user": "",
+    "password": "",
+    "isDefault": true
+  }'
+```
+
+### Import Dashboards
+
+1. **Dashboard Files**: Located in `grafana_dashboard` folder
+2. **Access Grafana**: http://raspberry_pi_ip:3000 (admin/admin)
+3. **Import Dashboard**:
+   - Click + (Create) → Import
+   - Upload .json file from grafana_dashboards folder
+   - Select "InfluxDB" as datasource
+   - Click Import
+
+**Key Metrics to Monitor**:
+- **SINSTI**: Injected power (solar production)
+- **SINSTS**: Consumed power (house consumption)
+- **ERQT**: Total reactive power
+- Power balance (injection - consumption)
+
 ### Access Services
 - **Grafana**: http://raspberry_pi_ip:3000 (admin/admin)
 - **InfluxDB**: http://raspberry_pi_ip:8086
