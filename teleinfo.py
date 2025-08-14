@@ -62,6 +62,14 @@ while not connected:
             logging.info("Database %s created!", DB_NAME)
 
         client.switch_database(DB_NAME)
+        
+        # Set retention policy to 1 year
+        try:
+            client.create_retention_policy('one_year', '365d', 1, database=DB_NAME, default=True)
+            logging.info("Retention policy set to 1 year")
+        except Exception as e:
+            logging.info("Retention policy already exists or error: %s", e)
+        
         logging.info("Connected to %s!", DB_NAME)
         connected = True 
 
