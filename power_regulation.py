@@ -44,7 +44,7 @@ import paho.mqtt.client as mqtt
 
 # Initialize InfluxDB client
 from config import (INFLUXDB_HOST, INFLUXDB_PORT, INFLUXDB_USERNAME,
-                   INFLUXDB_PASSWORD, INFLUXDB_DATABASE)
+                   INFLUXDB_PASSWORD, INFLUXDB_DATABASE, HC_START_TIME, HC_END_TIME)
 
 from debug import debug as debug
 import equipment
@@ -107,8 +107,6 @@ while not connected:
         connected = True
 
 def HC_ok():
-    from config import HC_START_TIME, HC_END_TIME
-    
     tz = pytz.timezone('Europe/Paris')
     now = datetime.now(tz)
     current_time = now.strftime("%H:%M")
