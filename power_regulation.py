@@ -107,13 +107,13 @@ while not connected:
         connected = True
 
 def HC_ok():
-
+    from config import HC_START_TIME, HC_END_TIME
+    
     tz = pytz.timezone('Europe/Paris')
     now = datetime.now(tz)
     current_time = now.strftime("%H:%M")
-    #if is_between(current_time, ("02:05", "16:50")):
-    if is_between(current_time, ("02:05", "06:50")):
-        #// or is_between(current_time, ("12:32","15:20")):
+    
+    if is_between(current_time, (HC_START_TIME, HC_END_TIME)):
        return True
     else:
        return False

@@ -29,3 +29,7 @@ INFLUXDB_PORT = int(os.getenv('INFLUXDB_PORT', '8086'))
 INFLUXDB_DATABASE = os.getenv('INFLUXDB_DATABASE', 'teleinfo')
 INFLUXDB_USERNAME = os.getenv('INFLUXDB_USERNAME', '')
 INFLUXDB_PASSWORD = os.getenv('INFLUXDB_PASSWORD', '')
+
+# Heures Creuses (Off-peak hours) Settings
+HC_START_TIME = os.getenv('HC_START_TIME', '02:05')
+HC_END_TIME = os.getenv('HC_END_TIME', '06:50')
