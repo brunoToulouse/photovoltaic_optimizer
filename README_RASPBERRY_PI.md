@@ -27,7 +27,7 @@ If not configured during flashing:
    country=FR
    ctrl_interface=DIR=/var/run/wpa_supplicant GROUP=netdev
    update_config=1
-   
+
    network={
        ssid="YOUR_WIFI_NAME"
        psk="YOUR_WIFI_PASSWORD"
@@ -133,7 +133,7 @@ pip3 --version
 ### Clone Repository
 ```bash
 cd ~
-git clone https://github.com/your-username/photovoltaic_optimizer.git
+git clone https://github.com/brunoToulouse/photovoltaic_optimizer.git
 cd photovoltaic_optimizer
 ```
 
@@ -181,6 +181,12 @@ Add:
 listener 1883
 allow_anonymous false
 password_file /etc/mosquitto/passwd
+```
+
+Change access rights:
+```bash
+sudo chmod 600 /etc/mosquitto/passwd
+sudo chown mosquitto:mosquitto /etc/mosquitto/passwd
 ```
 
 Restart MQTT:

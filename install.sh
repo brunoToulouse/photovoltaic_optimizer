@@ -24,11 +24,9 @@ sudo systemctl enable influxdb
 sudo systemctl start influxdb
 
 echo "installation de grafana"
-sudo apt install -y apt-transport-https software-properties-common wget
+wget -q -O - https://packages.grafana.com/gpg.key | gpg --dearmor | sudo tee /usr/share/keyrings/grafana.gpg > /dev/null
 
-wget -q -O - https://packages.grafana.com/gpg.key | sudo apt-key add -
-
-sudo add-apt-repository "deb https://packages.grafana.com/oss/deb stable main"
+echo "deb [signed-by=/usr/share/keyrings/grafana.gpg] https://packages.grafana.com/oss/deb stable main" | sudo tee /etc/apt/sources.list.d/grafana.list
 
 sudo apt update
 sudo apt install grafana
